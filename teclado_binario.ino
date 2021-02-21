@@ -10,7 +10,12 @@ const int b0 = 10, b1 = 16, bDel = 14;
 
 byte keyCode   = 0;
 int actualPos  = 7;
-const int bDelay = 175;
+int lastMask = 0;
+int pressed = 0;
+int countdown = 0;
+const int delayLong = 1000;
+const int delayShort = 100;
+const int pollingRate = 20;
 
 
 /* Print in the LCD the number num in binary */
@@ -83,18 +88,40 @@ void setup() {
   Keyboard.begin();
 }
 
-void loop() { 
-  if(!digitalRead(b0)){
-    writeValue(0); 
-    delay(bDelay);
-  }
-  if(!digitalRead(b1)){
-    writeValue(1); 
-    delay(bDelay);
+void loop() {
+  int mask = !digitalRead(b0)
+              | !digitalRead(b1)   << 1
+              | !digitalRead(bDel) << 2;
+
+  if (mask > lastMask) {
+    pressed = mask ^ lastMask;
+    countdown = 0;
+  } else if (mask < lastMask) {
+    pressed = 0;
+    countdown = 0;
   }
 
-  if(!digitalRead(bDel)){
-    deleteValue();
-    delay(bDelay);
+  if (countdown == 0) {
+    switch (pressed) {
+    case 1:
+      writeValue(0);
+      break;
+    case 1 << 1:
+      writeValue(1);
+      break;
+    case 1 << 2:
+      deleteValue();
+      break;
+    }
+
+    if (mask != lastMask)
+      countdown = delayLong;
+    else
+      countdown = delayShort;
   }
+
+  delay(pollingRate);
+  countdown -= pollingRate;
+
+  lastMask = mask;
 }
