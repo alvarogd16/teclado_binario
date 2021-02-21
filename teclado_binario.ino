@@ -38,7 +38,6 @@ void sendKey(){
   //lcd.print(keyCode);
 
   keyCode = 0;
-  delay(500);
   printBinary(keyCode);
 }
 
@@ -101,7 +100,7 @@ void loop() {
     countdown = 0;
   }
 
-  if (countdown == 0) {
+  if (countdown <= 0) {
     switch (pressed) {
     case 1:
       writeValue(0);
