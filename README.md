@@ -2,4 +2,4 @@
 
 Teclado binario para personas con mucha paciencia.
 
-[Video del teclado funcionando](docs/teclado.gif)
+<img src="docs/teclado.gif" width="30%"/>
