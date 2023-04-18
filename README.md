@@ -1,4 +1,4 @@
-# Teclado binario
+# Teclado binario 0⃣1⃣ 
 
 Teclado binario para personas con mucha paciencia.
 
